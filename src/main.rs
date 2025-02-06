@@ -11,6 +11,8 @@ struct Args {
     /// 总段数
     paragraph: u128,
 }
+
+/// read file convert to Vec<String>
 fn file_to_vec(path: &str) -> Vec<String> {
     match read_to_string(path) {
         Ok(s) => {
@@ -23,12 +25,14 @@ fn file_to_vec(path: &str) -> Vec<String> {
     }
 }
 
+/// get random element from Vec<String>
 fn get_rand_element(vec: &[String]) -> String {
     let mut rng = rng();
     vec[rng.random_range(0..vec.len())].clone()
 }
 
 fn main() {
+    // convert args from string to struct
     let args = match Args::from_args_safe() {
         Ok(args) => args,
         Err(error) => {
@@ -37,6 +41,7 @@ fn main() {
         }
     };
 
+    // read meta data from files
     let v = file_to_vec("v.txt");
     let t = file_to_vec("t.txt");
     let i = file_to_vec("i.txt");
@@ -49,6 +54,7 @@ fn main() {
             let sentence = get_rand_element(&sentence);
 
             let mut line_result = String::new();
+            // match every char in random sentence and replace special sign into random string, push random string to a new String and print it
             for current_char in sentence.chars() {
                 match current_char {
                     'v' => line_result.push_str(&get_rand_element(&v)),
