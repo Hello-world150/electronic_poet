@@ -1,5 +1,6 @@
 use exitcode::{DATAERR, IOERR};
 use rand::{rng, Rng};
+use std::io::{self, Write};
 use std::{fs::read_to_string, process::exit};
 use structopt::StructOpt;
 
@@ -41,6 +42,9 @@ fn main() {
         }
     };
 
+    let stdout = io::stdout();
+    let mut handle = stdout.lock();
+
     // read meta data from files
     let v = file_to_vec("v.txt");
     let t = file_to_vec("t.txt");
@@ -65,10 +69,9 @@ fn main() {
                     _ => line_result.push_str(&current_char.to_string()[..]), // as `&str` type
                 }
             }
-
-            println!("{line_result}");
+            writeln!(handle, "{line_result}").expect("Failed print");
         }
 
-        println!();
+        writeln!(handle, "").expect("Failed print");
     }
 }
