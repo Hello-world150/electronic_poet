@@ -4,12 +4,12 @@ use std::io::{self, Write};
 use std::{fs::read_to_string, process::exit};
 use structopt::StructOpt;
 
-/// 电子诗人
+/// Electronic Poet
 #[derive(StructOpt)]
 struct Args {
-    /// 每段行数
+    /// The number of rows in each paragraph.
     line: usize,
-    /// 总段数
+    /// The number of paragraphs.
     paragraph: usize,
 }
 
@@ -45,7 +45,7 @@ fn main() {
     let stdout = io::stdout();
     let mut handle = stdout.lock();
 
-    // read meta data from files
+    // read data from files
     let v = file_to_vec("v.txt");
     let t = file_to_vec("t.txt");
     let i = file_to_vec("i.txt");
@@ -69,9 +69,9 @@ fn main() {
                     _ => line_result.push_str(&current_char.to_string()[..]), // as `&str` type
                 }
             }
-            writeln!(handle, "{line_result}").expect("Failed print");
+            writeln!(handle, "{line_result}").ok();
         }
 
-        writeln!(handle, "").expect("Failed print");
+        writeln!(handle, "\r").ok();
     }
 }
